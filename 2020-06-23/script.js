@@ -21,12 +21,14 @@ let getAlbums = () => {
 
 getAlbums();
 
-let addRateToAlbum =() => {
+let addRateToAlbum = (albums) => {
 albums.map( album =>{
     album.rate = Math.floor(Math.random() * 100) + 1;
-    if(album.rate > 80)
-       selectedAlbum.push(album);
-     return album
+    if(album.rate > 80){
+        selectedAlbum.push(album);
+    }
+       
+    
     })
 }
 // albums.range = Math.floor(Math.random() * 100) + 1;
