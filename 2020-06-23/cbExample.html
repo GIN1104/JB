@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+</head>
+
+<body>
+    <!-- <div class="row p-5">
+        <form class="col-10">
+            <div class="form-group">
+                <label for="showId">Enter show id</label>
+                <input type="text" class="form-control" id="showId" aria-describedby="emailHelp">
+            </div>
+            <button type="button" class="btn btn-primary" onclick="searchShow()">Submit</button>
+        </form>
+    </div> -->
+
+
+    <div class="row p-5" id="showDV">
+
+    </div>
+
+    <script>
+        var SingleShow = {};
+        var shows = [];
+        var strShow = "";
+        var rand = Math.floor(Math.random() * 249) + 1;
+        var Baseurl = "http://api.tvmaze.com/shows";
+        var SelectedArray = [];
+
+        getAllMovies(Baseurl);
+
+        function getAllMovies(url) {
+            $.ajax({
+                type: 'GET',
+                datatype: 'json',
+                url: url,
+                success: function (data) {
+                    console.log("Data : ", data);
+                    shows = data.slice(0, 5);
+                    console.log("Data1 : ", shows);
+                    buildShows();
+                },
+                error: function (error) {
+                    console.log("error : ", error);
+                }
+            });
+
+            // console.log("Data1 : ", data);
+        }
+
+
+        function buildShows() {
+            console.log(shows)
+            for (var i = 0; i < shows.length; i++) {
+                pritShows(shows[i], i);
+            }
+            //console.log(strShow)
+            //document.getElementById('showDV')
+            showDV.innerHTML = strShow;
+        }
+
+
+
+        function pritShows(show, i) {
+            // console.log(show);
+            strShow += '<div class="col-4">'
+            strShow += '<div class="card" style="width: 18rem;">'
+            strShow += '<img src="' + show.image.medium + '" class="card-img-top" alt="...">'
+            strShow += '<div class="card-body">'
+            strShow += ' <h5 class="card-title">' + show.name + '</h5>'
+            strShow += '<p class="card-text">' + show.summary + '</p>'
+            strShow += '<a href="' + show.url + '" class="btn btn-primary">More details</a>'
+            strShow += '</div>'
+            strShow += '</div>'
+            strShow += '<div class="form-group form-check">'
+            strShow += '<input type="checkbox" class="form-check-input" onclick="CbClick(this,' + i + ');" id="exampleCheck' + show.id + '>'
+            strShow += '<label class="form-check-label" >Select Movie</label>'
+            strShow += '</div>'
+            strShow += '</div>'
+        }
+
+
+        function getSingleShowFromServer(url) {
+            console.log("URL : ", url)
+            $.ajax({
+                type: 'GET',
+                datatype: 'json',
+                url: url,
+                success: function (data) {
+                    SingleShow = data;
+                    strShow = ""
+                    shows = [];
+                    shows.push(data)
+                    buildShows();
+                },
+                error: function (error) {
+                    console.log("error : ", error);
+                }
+            });
+        }
+
+        function CbClick(cb, i) {
+            if (cb.checked) {
+                SelectedArray.push(shows[i]);
+            } else {
+
+                let Index = SelectedArray.findIndex(item => {
+                    return item.id == shows[i].id;
+                })
+
+                SelectedArray.splice(Index, 1)
+                console.log("Find : ", SelectedArray)
+            }
+
+            console.log(SelectedArray)
+            //SelectedArray
+        }
+
+
+        function searchShow() {
+            var id = document.getElementById('showId').value;
+            var url = "http://api.tvmaze.com/shows/" + id;
+            getSingleShowFromServer(url);
+        }
+    </script>
+</body>
+
+</html>
+
+
+
+
+
+
+
+
+<!-- function CbClick(cb, i) {
+    // console.log("CB : ", cb.checked, i)
+
+    if (cb.checked) {
+        SelectedArray.push(shows[i])
+    }
+    else {
+        let ID = SelectedArray.findIndex(item => {
+            return item.id == shows[i].id
+        })
+
+        SelectedArray.splice(ID, 1)
+        console.log("Find : ", ID, SelectedArray);
+    }
+    console.log(SelectedArray)
+} -->
