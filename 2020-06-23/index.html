@@ -17,7 +17,62 @@
     </div>
 
 
-    <script src="script.js"></script>
+    <script>
+
+let albums = [],
+    url = "https://jsonplaceholder.typicode.com/albums",
+    rand = Math.floor(Math.random() * 100) + 1;
+    rand1 = Math.floor(Math.random() * 10) + 1;
+    rand2 = Math.floor(Math.random() * 25) + 1;
+
+let getAlbums = () => {
+    $.ajax({
+        type: 'GET',
+        datatype: 'json',
+        url: url,
+        async: false,
+        success: function (data) {   
+            albums = data;
+           // console.log(albums);
+
+        },
+        error: function (error) {
+            console.log("error : ", error);
+        }
+    });
+}
+
+getAlbums();
+
+
+let newAlbums = [];
+    newAlbums1 = [],
+    alfabet =  ['a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'];
+
+ newAlbums = albums.find(album => album.id === rand);
+ console.log(rand)
+ console.log(newAlbums)
+
+//  for(let i = 0; i < 10; i++){
+//  newAlbums1 = albums.filter(album => album.userId === rand1);
+// }
+
+// for(let album of albums){
+//     newAlbums1 = albums.filter(album => album.userId === rand1);   
+// }
+
+newAlbums1 = albums.filter(album => album.userId === rand1)  
+    
+ console.log(rand1)
+ console.log(newAlbums1)
+
+ let newAlbums2 = albums.filter(album => album.title.startsWith(alfabet[rand2]))
+
+console.log(newAlbums2);
+console.log(alfabet[rand2])
+
+
+    </script>
 </body>
 
 </html>
